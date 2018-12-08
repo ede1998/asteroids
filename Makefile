@@ -3,7 +3,7 @@
 CC=g++
 CFLAGS=-W -Wall -Wextra -O0 -g -fdiagnostics-color #-I include (suche in diesem ordner nach c files)
 
-SDL_FLAGS := $(shell sdl2-config --cflags --libs) $(shell pkg-config gl --libs)
+SDL_FLAGS := $(shell sdl2-config --libs) $(shell pkg-config gl --libs)
 
 PROJ_OBJ = main.cpp GL-Window.cpp AS-spaceship.cpp AS-environment.cpp
 

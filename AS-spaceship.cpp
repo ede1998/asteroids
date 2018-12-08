@@ -6,7 +6,7 @@
  *          used for player controlled unit     */
 
 #include "AS-Spaceship.h"
-#include "SDL_opengl.h"
+#include <SDL2/SDL_opengl.h>
 #include <iostream>
 #include <cmath>
 

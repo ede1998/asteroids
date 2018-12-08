@@ -6,7 +6,7 @@
  *                                             */
  
 #include "GL-Window.h"
-#include "SDL_opengl.h"
+#include <SDL2/SDL_opengl.h>
 #include <iostream>
 
 GL_window::GL_window(int w, int h, inpmouse in, int x, int y) :
