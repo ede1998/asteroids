@@ -7,11 +7,6 @@
 
 #include <vector>
 
-#define AS_SPACESHIP_BULLET_COOLDOWN 50
-#define AS_SPACESHIP_BULLET_DMG 100
-#define AS_BULLET_SPEED 0.1
-#define AS_SPACESHIP_ACC 0.03
-
 #define AS_MAP_LEFT -40
 #define AS_MAP_RIGHT 40
 #define AS_MAP_BOTTOM -30
@@ -20,14 +15,6 @@
 #define AS_MAP_HEIGHT (std::abs(AS_MAP_TOP)+std::abs(AS_MAP_BOTTOM))
 #define AS_MAP_XYRATIO ((double)AS_MAP_HEIGHT/AS_MAP_WIDTH)
 
-#define AS_SPACESHIP_X1 5
-#define AS_SPACESHIP_Y1 0
-#define AS_SPACESHIP_X2 -5
-#define AS_SPACESHIP_Y2  5
-#define AS_SPACESHIP_X3  -5
-#define AS_SPACESHIP_Y3  -5
-
-#define PI 3.14159265358979
 
 struct Bullet
 {
@@ -36,6 +23,8 @@ struct Bullet
 	  : _rotation(rot), _positionx(posx), _positiony(posy)
   {
   }
+  constexpr static int DAMAGE = 100;
+  constexpr static double SPEED = 0.1;
 };
 
 class Spaceship
@@ -58,5 +47,10 @@ class Spaceship
     int _bullet_cooldown;
     std::vector<Bullet> _projectiles;
     void calcBulletPos(double tp);
+
+    constexpr static int VERTICES_X[] = {5,-5,-5};
+    constexpr static int VERTICES_Y[] = {0,5,-5};
+    constexpr static double ACCELERATION = 0.03;
+    constexpr static int BULLET_COOLDOWN = 50;
 };
 

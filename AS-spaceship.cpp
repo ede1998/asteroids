@@ -10,8 +10,6 @@
 #include <iostream>
 #include <cmath>
 
-
-#define time 10
 Spaceship::Spaceship(double x, double y, double rot) : 
         _positionx ( x   ),
         _positiony ( y   ),
@@ -32,14 +30,14 @@ void Spaceship::renderSpaceship()
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   glTranslatef(_positionx, _positiony, 0);
-  glRotatef(_rotation * 180 / PI, 0, 0, 1);
+  glRotatef(_rotation * 180 / M_PI, 0, 0, 1);
   glMatrixMode(GL_PROJECTION);
   glBegin(GL_TRIANGLES);
     glColor3f(1, 0, 0);
-    glVertex3f(AS_SPACESHIP_X1, AS_SPACESHIP_Y1, 0);
+    glVertex3f(VERTICES_X[0], VERTICES_Y[0], 0);
     glColor3f(1, 1, 1);
-    glVertex3f(AS_SPACESHIP_X2, AS_SPACESHIP_Y2, 0);
-    glVertex3f(AS_SPACESHIP_X3, AS_SPACESHIP_Y3, 0);
+    glVertex3f(VERTICES_X[1], VERTICES_Y[1], 0);
+    glVertex3f(VERTICES_X[2], VERTICES_Y[2], 0);
   glEnd();
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
@@ -62,7 +60,7 @@ void Spaceship::renderProjectiles()
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glTranslatef(iter->_positionx, iter->_positiony, 0);
-    glRotatef(iter->_rotation * 180 / PI, 0, 0, 1);
+    glRotatef(iter->_rotation * 180 / M_PI, 0, 0, 1);
     glMatrixMode(GL_PROJECTION);
     glBegin(GL_LINES);
       glColor3f(1,1,0.5);
@@ -76,20 +74,21 @@ void Spaceship::shoot()
 {
   if (_bullet_cooldown <= 0)
   {
-    _bullet_cooldown = AS_SPACESHIP_BULLET_COOLDOWN;
+    _bullet_cooldown = BULLET_COOLDOWN;
     _projectiles.emplace_back(_positionx, _positiony, _rotation);
   }
 }
 
 void Spaceship::boost()
 {
-  _speedx = AS_SPACESHIP_ACC;
+  _speedx = ACCELERATION * std::abs(std::cos(_rotation));
+  _speedy = ACCELERATION * std::abs(std::sin(_rotation));
 }
 
 void Spaceship::calcNewPosition(double tp)
 {
-  _speedx -= tp / 380 * AS_SPACESHIP_ACC;
-  _speedy -= tp / 380 * AS_SPACESHIP_ACC;
+  _speedx -= tp / 380 * ACCELERATION;
+  _speedy -= tp / 380 * ACCELERATION;
 //  std::cerr << _bullet_cooldown << std::endl;
   if (_speedx < 0) _speedx = 0;
   if (_speedy < 0) _speedy = 0;
@@ -103,8 +102,8 @@ void Spaceship::calcBulletPos(double tp)
 {
   for (auto iter = _projectiles.begin(); iter != _projectiles.end(); ++iter)
   {
-    iter->_positionx += AS_BULLET_SPEED * tp * std::cos(iter->_rotation);
-    iter->_positiony += AS_BULLET_SPEED * tp * std::sin(iter->_rotation);
+    iter->_positionx += Bullet::SPEED * tp * std::cos(iter->_rotation);
+    iter->_positiony += Bullet::SPEED * tp * std::sin(iter->_rotation);
   }
 }
 

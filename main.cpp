@@ -1,6 +1,5 @@
 #include <SDL2/SDL.h>
 #include <iostream>
-#include <SDL2/SDL_opengl.h>
 #include "GL-Window.h"
 #include "AS-spaceship.h"
 #include <ctime>
