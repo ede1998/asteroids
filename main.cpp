@@ -47,7 +47,9 @@ int main(int argc,char ** argv)
 void processMouseInput(bool mbleft, bool mbright, int x, int y)
 {
   double n = (double) x / AS_WIN_MAX_X, m = (double) y / AS_WIN_MAX_Y;
-  shipP->rotate(n,m);
+  double posx = AS_MAP_LEFT + n * AS_MAP_WIDTH;
+  double posy = AS_MAP_BOTTOM + (1-m) * AS_MAP_HEIGHT;
+  shipP->rotate(posx,posy);
   if (mbleft)
     shipP->shoot();
   if (mbright)

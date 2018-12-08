@@ -110,11 +110,12 @@ void Spaceship::calcBulletPos(double tp)
 void Spaceship::rotate(double x, double y)
 {
   //TODO: ADD max rot speed
-  // x,y in 0..1
-  // put x,y in -0.5..0.5 and invert y axis
-  x -= 0.5;
-  y = 0.5 - y;
-  _rotation = std::atan2(AS_MAP_XYRATIO * y, x);
+  // x,y should be position in world
+
+  double deltaX = x - _positionx;
+  double deltaY = y - _positiony;
+
+  _rotation = std::atan2(deltaY, deltaX);
 }
 
 

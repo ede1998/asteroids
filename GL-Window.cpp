@@ -122,9 +122,9 @@ bool GL_window::check_msgs()
       default:
         break;
     }
-  }
   if (_mleft) { if (!pressed) {_mleft = false;}}
   if (_mright) { if (!pressed) {_mright = false;}}
+  }
   if ( _mleft || _mright || moved )
     _inputfunction(_mleft, _mright, _mx, _my);
   return true;
