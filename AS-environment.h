@@ -10,33 +10,33 @@
 #define AS_ASTEROID_MASS_SINGLE_MAX 3000
 #define AS_ASTEROID_SPEED 100
 
-struct point
+struct Point
 {
   double x, y;
 };
 
-struct asteroid
+struct Asteroid
 {
-  double posx, posy;
-  double speedx, speedy;
-  int mass;
+  double _positionx, _positiony;
+  double _speedx, _speedy;
+  int _mass;
   //vertices (relative)
-  point v[7];
+  Point v[7];
 };
 
-class environment
+class Environment
 {
   public:
-    environment();
-    ~environment();
+    Environment();
+    ~Environment();
     void render();
-    int detectCollision(spaceship s);
-    void detectCollision(bullet b);
+    int detectCollision(Spaceship s);
+    void detectCollision(Bullet b);
     void process();
     void generate();
     
   private:
-    ordered_list asteroids;
+    std::vector<Asteroid> _asteroids;
     void generateAsteroid(int mass);
     void splitAsteroid();
     void moveAsteroid();

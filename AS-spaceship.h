@@ -5,6 +5,8 @@
  * abstract: definition of spaceship class, *
  *          used for player controlled unit */
 
+#include <vector>
+
 #define AS_SPACESHIP_BULLET_COOLDOWN 50
 #define AS_SPACESHIP_BULLET_DMG 100
 #define AS_BULLET_SPEED 0.1
@@ -16,7 +18,7 @@
 #define AS_MAP_TOP 30
 #define AS_MAP_WIDTH (std::abs(AS_MAP_RIGHT)+std::abs(AS_MAP_LEFT))
 #define AS_MAP_HEIGHT (std::abs(AS_MAP_TOP)+std::abs(AS_MAP_BOTTOM))
-#define AS_MAP_XYRATIO (AS_MAP_HEIGHT/AS_MAP_WIDTH)
+#define AS_MAP_XYRATIO ((double)AS_MAP_HEIGHT/AS_MAP_WIDTH)
 
 #define AS_SPACESHIP_X1 5
 #define AS_SPACESHIP_Y1 0
@@ -27,25 +29,26 @@
 
 #define PI 3.14159265358979
 
-#include "Ordered-list.h"
-
-struct bullet
+struct Bullet
 {
-  double rot, posx, posy;
+  double _rotation, _positionx, _positiony;
+  Bullet(double posx, double posy, double rot)
+	  : _rotation(rot), _positionx(posx), _positiony(posy)
+  {
+  }
 };
 
-class spaceship
+class Spaceship
 {
   public:
-    spaceship(double x, double y, double rot = 0);
-    virtual ~spaceship();
+    Spaceship(double x, double y, double rot = 0);
+    virtual ~Spaceship();
     void renderSpaceship();
     void renderProjectiles();
     void shoot();
     void boost();
     void rotate(double x, double y);
     void calcNewPosition(double tp);
-    double x1,y1;
   private:
     double _positionx;
     double _positiony;
@@ -53,7 +56,7 @@ class spaceship
     double _speedy;
     double _rotation;
     int _bullet_cooldown;
-    ordered_list * _projectiles;
+    std::vector<Bullet> _projectiles;
     void calcBulletPos(double tp);
 };
 

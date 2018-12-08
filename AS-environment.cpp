@@ -6,62 +6,62 @@
 
 #include "AS-environment.h"
 
-environment::environment()
+Environment::Environment()
 {
 
 }
 
-environment::~environment()
+Environment::~Environment()
 {
 
 }
 
-void environment::render()
+void Environment::render()
 {
 
 }
 
-int environment::detectCollision(spaceship s)
+int Environment::detectCollision(Spaceship s)
 {
   return -1;
 }
 
-void environment::detectCollision(bullet b)
+void Environment::detectCollision(Bullet b)
 {
 
 }
 
-void environment::process()
+void Environment::process()
 {
 
 }
 
-void environment::generate()
+void Environment::generate()
 {
 
 }
 
-void environment::generateAsteroid(int mass)
+void Environment::generateAsteroid(int mass)
 {
 
 }
 
-void environment::splitAsteroid()
+void Environment::splitAsteroid()
 {
 
 }
 
-void environment::moveAsteroid()
+void Environment::moveAsteroid()
 {
 
 }
 
-void environment::checkhealth()
+void Environment::checkhealth()
 {
 
 }
 
-int environment::calcmass()
+int Environment::calcmass()
 {
   return -1;
 }

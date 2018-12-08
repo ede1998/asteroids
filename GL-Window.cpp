@@ -14,6 +14,7 @@ GL_window::GL_window(int w, int h, inpmouse in, int x, int y) :
          _width     ( w ),
          _positionx ( x ),
          _positiony ( y ),
+	 _window( nullptr ),
          _inputfunction ( in ),
          _mleft ( false ),
          _mright ( false ),
@@ -38,17 +39,17 @@ bool GL_window::create(double left, double right, double bottom, double top)
   }
   
   //if no window already exists create a new one
-  if (_window != NULL) return false;
+  if (_window != nullptr) return false;
   _window = SDL_CreateWindow(_caption.c_str(), _positionx, _positiony, _width, _height, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
-  if (_window == NULL) 
+  if (_window == nullptr) 
   {
     std::cerr << "Fehler: CreateWindow" << std::endl << SDL_GetError() << std::endl;
     return false;
   }
   //Create rendering context
-  if (_glc != NULL) return false;
+  if (_glc != nullptr) return false;
   _glc = SDL_GL_CreateContext(_window);
-  if (_glc == NULL) 
+  if (_glc == nullptr) 
   {
     std::cerr << "Fehler: CreateGLContext" << std::endl << SDL_GetError() << std::endl;
     return false;
@@ -114,15 +115,14 @@ bool GL_window::check_msgs()
         break;
       case SDL_MOUSEBUTTONDOWN:
       case SDL_MOUSEBUTTONUP:
-        _mleft = event.button.button && SDL_BUTTON_LEFT;
-        _mright = event.button.button && SDL_BUTTON_RIGHT;
-        pressed = event.button.state && SDL_PRESSED;
+        _mleft = event.button.button == SDL_BUTTON_LEFT;
+        _mright = event.button.button == SDL_BUTTON_RIGHT;
+        pressed = event.button.state == SDL_PRESSED;
         break;
       default:
         break;
     }
   }
-  std::cerr << _mleft << "   " << _mleft << std::endl;
   if (_mleft) { if (!pressed) {_mleft = false;}}
   if (_mright) { if (!pressed) {_mright = false;}}
   if ( _mleft || _mright || moved )

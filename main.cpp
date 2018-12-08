@@ -11,7 +11,7 @@
 using std::cout;
 using std::endl;
 
-spaceship * ship;
+Spaceship *shipP;
 
 void processMouseInput(bool mbleft, bool mbright, int x, int y);
 
@@ -22,23 +22,24 @@ int main(int argc,char ** argv)
  (void) argv;
 
   timespec currenttime;
-  GL_window * game_out = new GL_window(800, 600, processMouseInput);
-  game_out->create(AS_MAP_LEFT, AS_MAP_RIGHT, AS_MAP_BOTTOM, AS_MAP_TOP);
-  game_out->setCaption("Asteroids");
-  ship = new spaceship(0,0,0.);
+  GL_window game_out = GL_window(800, 600, processMouseInput);
+  game_out.create(AS_MAP_LEFT, AS_MAP_RIGHT, AS_MAP_BOTTOM, AS_MAP_TOP);
+  game_out.setCaption("Asteroids");
+  Spaceship ship(0,0,0.);
+  shipP = &ship;
   clock_gettime(CLOCK_MONOTONIC, &currenttime);
   while (1)
   {
     double ms = (double) currenttime.tv_nsec;
     clock_gettime(CLOCK_MONOTONIC, &currenttime);
     ms = ((double) currenttime.tv_nsec - ms) / 1000000;
-    if (!game_out->check_msgs()) break;
+    if (!game_out.check_msgs()) break;
     ms = 16;
-    ship->calcNewPosition(ms);
-    game_out->clear_window();
-    ship->renderSpaceship();
-    ship->renderProjectiles();
-    game_out->refresh_window();
+    ship.calcNewPosition(ms);
+    game_out.clear_window();
+    ship.renderSpaceship();
+    ship.renderProjectiles();
+    game_out.refresh_window();
   }
   return 0;
 }
@@ -47,10 +48,9 @@ int main(int argc,char ** argv)
 void processMouseInput(bool mbleft, bool mbright, int x, int y)
 {
   double n = (double) x / AS_WIN_MAX_X, m = (double) y / AS_WIN_MAX_Y;
-  ship->rotate(n,m);
-  std::cerr << "    " << mbleft << endl;
+  shipP->rotate(n,m);
   if (mbleft)
-    ship->shoot();
+    shipP->shoot();
   if (mbright)
-    ship->boost();
+    shipP->boost();
 }
