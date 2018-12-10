@@ -100,7 +100,7 @@ void GL_window::clear_window()
 bool GL_window::check_msgs()
 { //TODO während drücken aktiv lassen
   SDL_Event event;
-  bool moved = false, pressed = false;
+  bool moved = false;
   while (SDL_PollEvent(&event))
   {
     switch (event.type)
@@ -115,15 +115,19 @@ bool GL_window::check_msgs()
         break;
       case SDL_MOUSEBUTTONDOWN:
       case SDL_MOUSEBUTTONUP:
-        _mleft = event.button.button == SDL_BUTTON_LEFT;
-        _mright = event.button.button == SDL_BUTTON_RIGHT;
-        pressed = event.button.state == SDL_PRESSED;
+	switch (event.button.button)
+	{
+	  case SDL_BUTTON_LEFT:
+	    _mleft = event.button.state == SDL_PRESSED;
+	    break;
+	  case SDL_BUTTON_RIGHT:
+	    _mright = event.button.state == SDL_PRESSED;
+	    break;
+	}
         break;
       default:
         break;
     }
-  if (_mleft) { if (!pressed) {_mleft = false;}}
-  if (_mright) { if (!pressed) {_mright = false;}}
   }
   if ( _mleft || _mright || moved )
     _inputfunction(_mleft, _mright, _mx, _my);
