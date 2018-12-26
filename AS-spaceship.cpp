@@ -5,10 +5,14 @@
  * abstract: implementation of Spaceship class, *
  *          used for player controlled unit     */
 
-#include "AS-Spaceship.h"
+#include "AS-spaceship.h"
 #include <SDL2/SDL_opengl.h>
 #include <iostream>
 #include <cmath>
+
+template <typename T> int sgn(T val) {
+    return (T(0) < val) - (val < T(0));
+}
 
 Spaceship::Spaceship(double x, double y, double rot) : 
         _positionx ( x   ),
@@ -22,7 +26,6 @@ Spaceship::Spaceship(double x, double y, double rot) :
 
 Spaceship::~Spaceship()
 {
-
 }
 
 void Spaceship::renderSpaceship()
@@ -89,11 +92,19 @@ void Spaceship::calcNewPosition(double tp)
 {
   _speedx -= tp / 380 * ACCELERATION;
   _speedy -= tp / 380 * ACCELERATION;
-//  std::cerr << _bullet_cooldown << std::endl;
   if (_speedx < 0) _speedx = 0;
   if (_speedy < 0) _speedy = 0;
-  _positionx += _speedx * tp * cos(_rotation);
-  _positiony += _speedy * tp * sin(_rotation);
+
+  const double difference = _desired_rotation - _rotation;
+  const double normalized_difference = std::remainder(difference, 2 * M_PI);
+  // Rotate faster if difference is greater
+  _rotation += normalized_difference * ROTATION_SPEED * tp;
+  // Keep rotation in +- PI
+  _rotation = std::remainder(_rotation, 2 * M_PI);
+
+  _positionx += _speedx * tp * std::cos(_rotation) + std::cos(_rotation) * MIN_SPEED;
+  _positiony += _speedy * tp * std::sin(_rotation) + std::sin(_rotation) * MIN_SPEED;
+
   if (_bullet_cooldown > 0) _bullet_cooldown -= tp;
   calcBulletPos(tp);
 }
@@ -115,7 +126,7 @@ void Spaceship::rotate(double x, double y)
   double deltaX = x - _positionx;
   double deltaY = y - _positiony;
 
-  _rotation = std::atan2(deltaY, deltaX);
+  _desired_rotation = std::atan2(deltaY, deltaX);
 }
 
 

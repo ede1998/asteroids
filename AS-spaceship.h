@@ -44,6 +44,7 @@ class Spaceship
     double _speedx;
     double _speedy;
     double _rotation;
+    double _desired_rotation;
     int _bullet_cooldown;
     std::vector<Bullet> _projectiles;
     void calcBulletPos(double tp);
@@ -52,5 +53,7 @@ class Spaceship
     constexpr static int VERTICES_Y[] = {0,5,-5};
     constexpr static double ACCELERATION = 0.03;
     constexpr static int BULLET_COOLDOWN = 50;
+    constexpr static double ROTATION_SPEED = 0.005;
+    constexpr static double MIN_SPEED = 0.3;
 };
 
