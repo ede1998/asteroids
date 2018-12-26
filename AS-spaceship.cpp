@@ -10,6 +10,8 @@
 #include <iostream>
 #include <cmath>
 
+extern uint32_t NOW;
+
 template <typename T> int sgn(T val) {
     return (T(0) < val) - (val < T(0));
 }
@@ -20,6 +22,8 @@ Spaceship::Spaceship(double x, double y, double rot) :
         _speedx    ( 0.  ),
         _speedy    ( 0.  ),
         _rotation  ( rot ),
+	_desired_rotation ( rot ),
+	_last_boost_activation ( 0 ),
         _bullet_cooldown ( 0 )
 {
 }
@@ -84,6 +88,8 @@ void Spaceship::shoot()
 
 void Spaceship::boost()
 {
+  if (_last_boost_activation + BOOST_COOLDOWN > NOW) return;
+  _last_boost_activation = NOW;
   _speedx = ACCELERATION * std::abs(std::cos(_rotation));
   _speedy = ACCELERATION * std::abs(std::sin(_rotation));
 }
