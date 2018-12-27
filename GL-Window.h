@@ -5,6 +5,8 @@
  * abstract: definition of GL-window class *
  *                                         */
 
+#pragma once
+
 #include <SDL2/SDL.h>
 #include <string>
 

@@ -5,7 +5,7 @@ CFLAGS=-W -Wall -Wextra -O0 -g -fdiagnostics-color #-I include (suche in diesem 
 
 SDL_FLAGS := $(shell sdl2-config --libs) $(shell pkg-config gl --libs)
 
-PROJ_OBJ = main.cpp GL-Window.cpp AS-spaceship.cpp AS-environment.cpp
+PROJ_OBJ = main.cpp GL-Window.cpp AS-spaceship.cpp AS-environment.cpp AS-asteroid.cpp
 
 PROJ_LDFLAGS=-ldl #dynamic linking
 

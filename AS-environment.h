@@ -4,25 +4,11 @@
  * date: 29.12.2016                                    *
  * abstract: controls environment of asteroids game    */
 
+#pragma once
+
 #include "AS-spaceship.h"
-
-#define AS_ASTEROID_MASS_MAX 15000
-#define AS_ASTEROID_MASS_SINGLE_MAX 3000
-#define AS_ASTEROID_SPEED 100
-
-struct Point
-{
-  double x, y;
-};
-
-struct Asteroid
-{
-  double _positionx, _positiony;
-  double _speedx, _speedy;
-  int _mass;
-  //vertices (relative)
-  Point v[7];
-};
+#include "AS-asteroid.h"
+#include <cstdint>
 
 class Environment
 {
@@ -32,15 +18,15 @@ class Environment
     void render();
     int detectCollision(Spaceship s);
     void detectCollision(Bullet b);
-    void process();
+    void process(double tp);
     void generate();
     
   private:
     std::vector<Asteroid> _asteroids;
-    void generateAsteroid(int mass);
+    uint32_t _last_generation;
     void splitAsteroid();
-    void moveAsteroid();
-    void checkhealth();
+    void checkHealth();
     int calcmass();
 
+    constexpr static uint32_t GENERATION_COOLDOWN = 2000;
 };

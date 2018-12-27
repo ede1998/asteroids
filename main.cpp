@@ -2,8 +2,9 @@
 #include <iostream>
 #include "GL-Window.h"
 #include "AS-spaceship.h"
+#include "AS-environment.h"
+#include <cstdlib>
 #include <ctime>
-#include <unistd.h>
 
 #define AS_WIN_MAX_X 800
 #define AS_WIN_MAX_Y 600
@@ -22,9 +23,11 @@ int main(int argc,char ** argv)
  (void) argc;
  (void) argv;
 
+  std::srand(std::time(nullptr));
   GL_window game_out = GL_window(800, 600, processMouseInput);
   game_out.create(AS_MAP_LEFT, AS_MAP_RIGHT, AS_MAP_BOTTOM, AS_MAP_TOP);
   game_out.setCaption("Asteroids");
+  Environment env;
   Spaceship ship(0,0,0.);
   shipP = &ship;
   NOW = SDL_GetTicks();
@@ -34,11 +37,13 @@ int main(int argc,char ** argv)
     NOW = SDL_GetTicks();
     if (!game_out.check_msgs()) break;
     double ms = NOW - last;
-    ms = 16;
+    ms = 0.5;
     ship.calcNewPosition(ms);
+    env.process(ms);
     game_out.clear_window();
     ship.renderSpaceship();
     ship.renderProjectiles();
+    env.render();
     game_out.refresh_window();
   }
   return 0;

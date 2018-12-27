@@ -5,17 +5,11 @@
  * abstract: definition of spaceship class, *
  *          used for player controlled unit */
 
+#pragma once
+
 #include <cstdint>
 #include <vector>
-
-#define AS_MAP_LEFT -40
-#define AS_MAP_RIGHT 40
-#define AS_MAP_BOTTOM -30
-#define AS_MAP_TOP 30
-#define AS_MAP_WIDTH (std::abs(AS_MAP_RIGHT)+std::abs(AS_MAP_LEFT))
-#define AS_MAP_HEIGHT (std::abs(AS_MAP_TOP)+std::abs(AS_MAP_BOTTOM))
-#define AS_MAP_XYRATIO ((double)AS_MAP_HEIGHT/AS_MAP_WIDTH)
-
+#include "AS-map.h"
 
 struct Bullet
 {
@@ -25,7 +19,7 @@ struct Bullet
   {
   }
   constexpr static int DAMAGE = 100;
-  constexpr static double SPEED = 0.1;
+  constexpr static double SPEED = 3;
 };
 
 class Spaceship
@@ -47,16 +41,16 @@ class Spaceship
     double _rotation;
     double _desired_rotation;
     uint32_t _last_boost_activation;
-    int _bullet_cooldown;
+    uint32_t _last_bullet_activation;
     std::vector<Bullet> _projectiles;
     void calcBulletPos(double tp);
 
     constexpr static int VERTICES_X[] = {5,-5,-5};
     constexpr static int VERTICES_Y[] = {0,5,-5};
-    constexpr static double ACCELERATION = 0.03;
-    constexpr static int BULLET_COOLDOWN = 50;
+    constexpr static double ACCELERATION = 1;
+    constexpr static int BULLET_COOLDOWN = 100;
     constexpr static uint32_t BOOST_COOLDOWN = 10000;
-    constexpr static double ROTATION_SPEED = 0.005;
+    constexpr static double ROTATION_SPEED = 0.05;
     constexpr static double MIN_SPEED = 0.3;
 };
 

@@ -24,7 +24,7 @@ Spaceship::Spaceship(double x, double y, double rot) :
         _rotation  ( rot ),
 	_desired_rotation ( rot ),
 	_last_boost_activation ( 0 ),
-        _bullet_cooldown ( 0 )
+        _last_bullet_activation ( 0 )
 {
 }
 
@@ -79,11 +79,9 @@ void Spaceship::renderProjectiles()
 
 void Spaceship::shoot()
 {
-  if (_bullet_cooldown <= 0)
-  {
-    _bullet_cooldown = BULLET_COOLDOWN;
-    _projectiles.emplace_back(_positionx, _positiony, _rotation);
-  }
+  if (_last_bullet_activation + BULLET_COOLDOWN > NOW) return;
+  _last_bullet_activation = NOW;
+  _projectiles.emplace_back(_positionx, _positiony, _rotation);
 }
 
 void Spaceship::boost()
@@ -96,8 +94,8 @@ void Spaceship::boost()
 
 void Spaceship::calcNewPosition(double tp)
 {
-  _speedx -= tp / 380 * ACCELERATION;
-  _speedy -= tp / 380 * ACCELERATION;
+  _speedx -= tp * ACCELERATION / 100;
+  _speedy -= tp * ACCELERATION / 100;
   if (_speedx < 0) _speedx = 0;
   if (_speedy < 0) _speedy = 0;
 
@@ -108,10 +106,9 @@ void Spaceship::calcNewPosition(double tp)
   // Keep rotation in +- PI
   _rotation = std::remainder(_rotation, 2 * M_PI);
 
-  _positionx += _speedx * tp * std::cos(_rotation) + std::cos(_rotation) * MIN_SPEED;
-  _positiony += _speedy * tp * std::sin(_rotation) + std::sin(_rotation) * MIN_SPEED;
+  _positionx += (_speedx + MIN_SPEED) * std::cos(_rotation) * tp;
+  _positiony += (_speedy + MIN_SPEED) * std::sin(_rotation) * tp;
 
-  if (_bullet_cooldown > 0) _bullet_cooldown -= tp;
   calcBulletPos(tp);
 }
 
@@ -126,7 +123,6 @@ void Spaceship::calcBulletPos(double tp)
 
 void Spaceship::rotate(double x, double y)
 {
-  //TODO: ADD max rot speed
   // x,y should be position in world
 
   double deltaX = x - _positionx;
