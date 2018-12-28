@@ -5,12 +5,14 @@
  * abstract: controls environment of asteroids game    */
 
 #include "AS-environment.h"
-#include "algorithm"
+#include <algorithm>
+#include <iostream>
 
 extern uint32_t NOW;
 
-Environment::Environment()
-	: _last_generation ( 0 )
+Environment::Environment(Spaceship& s)
+	: _last_generation ( 0 ),
+	  _spaceship ( s )
 {
   for (int i = 0; i < 1; ++i)
   {
@@ -32,6 +34,14 @@ void Environment::render()
 
 int Environment::detectCollision(Spaceship s)
 {
+  const auto& ship = s.getShape();
+  std::for_each(_asteroids.begin(), _asteroids.end(),
+		  [ship] (const Asteroid& a) {
+		    if (a.getShape().checkCollision(ship))
+		    {
+		      std::cout << "collision" << std::endl;
+		    }
+		  });
   return -1;
 }
 
@@ -52,6 +62,8 @@ void Environment::process(double tp)
      _asteroids.push_back(Asteroid::generate(5));
      _last_generation = NOW;
   }
+
+  detectCollision(_spaceship);
 }
 
 void Environment::generate()

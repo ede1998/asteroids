@@ -14,16 +14,21 @@
 #include "AS-map.h"
 
 Asteroid::Asteroid(double posx, double posy, double speedx, double speedy, int mass)
-	: _positionx ( posx ),
-	  _positiony ( posy ),
-	  _speedx ( speedx ),
-	  _speedy ( speedy ),
-	  _mass ( mass )
+	:  _positionx ( posx ),
+	   _positiony ( posy ),
+	   _speedx ( speedx ),
+	   _speedy ( speedy ),
+	   _mass ( mass )
 {
 }
 
 Asteroid::~Asteroid()
 {
+}
+
+const Shape& Asteroid::getShape() const
+{
+  return _shape;
 }
 
 void Asteroid::render() const
@@ -44,8 +49,13 @@ void Asteroid::render() const
 
 void Asteroid::process(double tp)
 {
-  _positionx += _speedx * tp;
-  _positiony += _speedy * tp;
+  const double delta_x = _speedx * tp;
+  const double delta_y = _speedy * tp;
+
+  _positionx += delta_x;
+  _positiony += delta_y;
+
+  _shape.move(delta_x, delta_y);
 }
 
 Asteroid Asteroid::generate(int mass)
@@ -94,6 +104,7 @@ Asteroid Asteroid::generate(int mass)
     const double radius = 1 + (double) std::rand() / RAND_MAX * 3;
     
     a._corners.emplace_back(std::cos(angle) * radius, std::sin(angle) * radius);
-}
+  }
+  a._shape.setCorners(a._corners);
   return a;
 }

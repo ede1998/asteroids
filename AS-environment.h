@@ -13,7 +13,7 @@
 class Environment
 {
   public:
-    Environment();
+    Environment(Spaceship& s);
     ~Environment();
     void render();
     int detectCollision(Spaceship s);
@@ -24,6 +24,7 @@ class Environment
   private:
     std::vector<Asteroid> _asteroids;
     uint32_t _last_generation;
+    Spaceship& _spaceship;
     void splitAsteroid();
     void checkHealth();
     int calcmass();

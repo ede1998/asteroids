@@ -10,6 +10,7 @@
 #include <cstdint>
 #include <vector>
 #include "AS-map.h"
+#include "shape.h"
 
 struct Bullet
 {
@@ -29,6 +30,7 @@ class Spaceship
     virtual ~Spaceship();
     void renderSpaceship();
     void renderProjectiles();
+    const Shape& getShape() const;
     void shoot();
     void boost();
     void rotate(double x, double y);
@@ -43,6 +45,7 @@ class Spaceship
     uint32_t _last_boost_activation;
     uint32_t _last_bullet_activation;
     std::vector<Bullet> _projectiles;
+    Shape _shape;
     void calcBulletPos(double tp);
 
     constexpr static int VERTICES_X[] = {5,-5,-5};

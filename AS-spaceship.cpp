@@ -9,12 +9,18 @@
 #include <SDL2/SDL_opengl.h>
 #include <iostream>
 #include <cmath>
+#include <functional>
+#include <algorithm>
+#include <utility>
 
 extern uint32_t NOW;
 
 template <typename T> int sgn(T val) {
     return (T(0) < val) - (val < T(0));
 }
+
+constexpr int Spaceship::VERTICES_X[];
+constexpr int Spaceship::VERTICES_Y[];
 
 Spaceship::Spaceship(double x, double y, double rot) : 
         _positionx ( x   ),
@@ -26,10 +32,21 @@ Spaceship::Spaceship(double x, double y, double rot) :
 	_last_boost_activation ( 0 ),
         _last_bullet_activation ( 0 )
 {
+  Shape::CornerList cl;
+  const Point pos(x,y);
+  auto make_point = [] (double x, double y) -> Point { return Point(x,y); };
+  std::transform(std::begin(VERTICES_X), std::end(VERTICES_X), std::begin(VERTICES_Y), std::back_inserter(cl), make_point);
+  std::transform(cl.begin(), cl.end(), cl.begin(), std::bind2nd(std::plus<Point>(), pos));
+  _shape.setCorners(std::move(cl));
 }
 
 Spaceship::~Spaceship()
 {
+}
+
+const Shape& Spaceship::getShape() const
+{
+  return _shape;
 }
 
 void Spaceship::renderSpaceship()
@@ -106,8 +123,13 @@ void Spaceship::calcNewPosition(double tp)
   // Keep rotation in +- PI
   _rotation = std::remainder(_rotation, 2 * M_PI);
 
-  _positionx += (_speedx + MIN_SPEED) * std::cos(_rotation) * tp;
-  _positiony += (_speedy + MIN_SPEED) * std::sin(_rotation) * tp;
+  const double delta_x = (_speedx + MIN_SPEED) * std::cos(_rotation) * tp;
+  const double delta_y = (_speedy + MIN_SPEED) * std::sin(_rotation) * tp;
+
+  _positionx += delta_x;
+  _positiony += delta_y;
+
+  _shape.move(delta_x, delta_y);
 
   calcBulletPos(tp);
 }

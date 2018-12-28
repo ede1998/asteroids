@@ -27,9 +27,9 @@ int main(int argc,char ** argv)
   GL_window game_out = GL_window(800, 600, processMouseInput);
   game_out.create(AS_MAP_LEFT, AS_MAP_RIGHT, AS_MAP_BOTTOM, AS_MAP_TOP);
   game_out.setCaption("Asteroids");
-  Environment env;
   Spaceship ship(0,0,0.);
   shipP = &ship;
+  Environment env(ship);
   NOW = SDL_GetTicks();
   while (1)
   {

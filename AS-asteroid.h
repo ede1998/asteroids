@@ -7,12 +7,8 @@
 #pragma once
 
 #include <vector>
+#include "shape.h"
 
-struct Point
-{
-  double x, y;
-  Point(double x, double y): x(x), y(y) {}
-};
 
 class Asteroid
 {
@@ -20,9 +16,9 @@ public:
   Asteroid(double posx, double posy, double speedx, double speedy, int mass);
   ~Asteroid();
   
+  const Shape& getShape() const;
   void render() const;
   void process(double tp);
-
   static Asteroid generate(int mass);
 private:
   double _positionx;
@@ -30,6 +26,7 @@ private:
   const double _speedx;
   const double _speedy;
   const int _mass;
+  Shape _shape;
 
   std::vector<Point> _corners;
 
