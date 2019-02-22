@@ -39,7 +39,8 @@ int Environment::detectCollision(Spaceship s)
 		  [ship] (const Asteroid& a) {
 		    if (a.getShape().checkCollision(ship))
 		    {
-		      std::cout << "collision" << std::endl;
+          std::cout << "asteroid:" << a._positionx << "  " << a._positiony;
+		      std::cout << "  collision" << std::endl;
 		    }
 		  });
   return -1;
@@ -57,11 +58,11 @@ void Environment::process(double tp)
 		    a.process(tp);
 		});
 
-  if (_last_generation + GENERATION_COOLDOWN < NOW)
-  {
-     _asteroids.push_back(Asteroid::generate(5));
-     _last_generation = NOW;
-  }
+   if (_last_generation + GENERATION_COOLDOWN < NOW)
+   {
+      _asteroids.push_back(Asteroid::generate(5));
+      _last_generation = NOW;
+   }
 
   detectCollision(_spaceship);
 }

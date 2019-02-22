@@ -14,16 +14,20 @@ class Shape
 {
 public:
   using CornerList = std::vector<Point>;
-  Shape(const CornerList& cl);
-  Shape() = default;
+  Shape(const Point& p, const CornerList& cl);
+  Shape(const Point& p);
+  Shape();
 
   void setCorners(const CornerList& cl);
+  void setPosition(const Point& p);
 
   bool checkCollision(const Shape& other) const;
   void move(double x, double y);
 private:
   CornerList _corners;
+  Point _position;
 
   double getAvgRadius() const;
   Point getCenter() const;
+  Point getRelativeCenter() const;
 };

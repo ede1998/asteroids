@@ -18,7 +18,8 @@ Asteroid::Asteroid(double posx, double posy, double speedx, double speedy, int m
 	   _positiony ( posy ),
 	   _speedx ( speedx ),
 	   _speedy ( speedy ),
-	   _mass ( mass )
+	   _mass ( mass ),
+     _shape ( Point(posx, posy) )
 {
 }
 

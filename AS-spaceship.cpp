@@ -37,6 +37,7 @@ Spaceship::Spaceship(double x, double y, double rot) :
   auto make_point = [] (double x, double y) -> Point { return Point(x,y); };
   std::transform(std::begin(VERTICES_X), std::end(VERTICES_X), std::begin(VERTICES_Y), std::back_inserter(cl), make_point);
   std::transform(cl.begin(), cl.end(), cl.begin(), std::bind2nd(std::plus<Point>(), pos));
+  _shape.setPosition(Point(x,y));
   _shape.setCorners(std::move(cl));
 }
 

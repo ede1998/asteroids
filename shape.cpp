@@ -10,15 +10,32 @@
 #include <algorithm>
 #include <functional>
 
-Shape::Shape(const CornerList& cl)
-	: _corners ( cl )
+Shape::Shape(const Point& p, const CornerList& cl)
+	: Shape(p)
 {
+  _corners = cl;
   assert(_corners.size() > 0);
+}
+
+Shape::Shape(const Point& p)
+: _position(p)
+{
+
+}
+
+Shape::Shape()
+: _position(0,0)
+{
 }
 
 void Shape::setCorners(const CornerList& cl)
 {
   _corners = cl;
+}
+
+void Shape::setPosition(const Point& p)
+{
+  _position = p;
 }
 
 bool Shape::checkCollision(const Shape& other) const
@@ -33,20 +50,26 @@ bool Shape::checkCollision(const Shape& other) const
 void Shape::move(double x, double y)
 {
   const Point p(x,y);
-  std::transform(_corners.begin(), _corners.end(), _corners.begin(), std::bind2nd(std::plus<Point>(), p));
+  _position = _position + p;
 }
 
 Point Shape::getCenter() const
 {
-  const size_t num_points = _corners.size();
-  const Point center = std::accumulate(_corners.begin(), _corners.end(), Point(0,0)) / num_points;
+  const Point center = _position + getRelativeCenter();
   return center;
+}
+
+Point Shape::getRelativeCenter() const
+{
+  const size_t num_points = _corners.size();
+  const Point relative_center = std::accumulate(_corners.begin(), _corners.end(), Point(0,0)) / num_points;
+  return relative_center;
 }
 
 double Shape::getAvgRadius() const
 {
   const size_t num_points = _corners.size();
-  const Point center = getCenter();
+  const Point center = getRelativeCenter();
 
   // Calculate all distances to center and average
   std::vector<double> distances;
